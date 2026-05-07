@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이용호 — Senior BI Analyst</title>
+  <meta name="description" content="데이터로 매출과 전환율을 움직이는 BI 분석가, 이용호의 프로필 사이트입니다." />
+
+  <!-- Pretendard 웹폰트 -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+
+  <!-- Tailwind CSS v3 Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["'Pretendard Variable'", 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+          },
+          transitionTimingFunction: {
+            'ease-out-cubic': 'cubic-bezier(0.33, 1, 0.68, 1)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+
+    /* 섹션 등장 애니메이션 초기 상태 */
+    .reveal {
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+                  transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 딜레이 유틸 */
+    .delay-100 { transition-delay: 0.1s; }
+    .delay-200 { transition-delay: 0.2s; }
+    .delay-300 { transition-delay: 0.3s; }
+    .delay-400 { transition-delay: 0.4s; }
+
+    /* 타임라인 세로선 */
+    .timeline-line {
+      position: absolute;
+      left: 0.5rem;
+      top: 1.5rem;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #6366f1, transparent);
+    }
+
+    /* 토스트 */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(1rem);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 9999;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* nav 스크롤 시 배경 */
+    #navbar.scrolled {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .dark #navbar.scrolled {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased">
+
+  <!-- ============================================================
+       TOAST 알림
+  ============================================================ -->
+  <div id="toast" role="alert" aria-live="polite">
+    <div class="bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 text-sm font-medium px-5 py-3 rounded-2xl shadow-sm">
+      이메일 주소가 클립보드에 복사되었습니다!
+    </div>
+  </div>
+
+  <!-- ============================================================
+       HEADER / NAV
+  ============================================================ -->
+  <header id="navbar" class="fixed top-0 inset-x-0 z-50 bg-slate-50/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/60 transition-shadow duration-300">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- 로고 -->
+        <a href="#hero" class="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          Yongho Lee
+        </a>
+
+        <!-- 데스크톱 네비 -->
+        <nav class="hidden md:flex items-center gap-6" aria-label="주요 섹션 네비게이션">
+          <a href="#about"      class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">About</a>
+          <a href="#skills"     class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Skills</a>
+          <a href="#experience" class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Experience</a>
+          <a href="#projects"   class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Projects</a>
+          <a href="#awards"     class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Awards</a>
+          <a href="#contact"    class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact</a>
+
+          <!-- 다크모드 토글 -->
+          <button id="darkToggle" aria-label="다크모드 토글"
+            class="ml-2 p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <!-- 라이트모드: 달 아이콘 -->
+            <svg id="iconMoon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+            </svg>
+            <!-- 다크모드: 해 아이콘 -->
+            <svg id="iconSun" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"/>
+              <path stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+        </nav>
+
+        <!-- 모바일: 다크토글 + 햄버거 -->
+        <div class="flex items-center gap-2 md:hidden">
+          <button id="darkToggleMobile" aria-label="다크모드 토글"
+            class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <svg id="iconMoonMobile" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+            </svg>
+            <svg id="iconSunMobile" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"/>
+              <path stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+          <button id="hamburger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobileMenu"
+            class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <svg id="iconHam" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <svg id="iconClose" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모바일 드롭다운 메뉴 -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
+      <nav class="max-w-5xl mx-auto px-6 py-4 flex flex-col gap-1" aria-label="모바일 네비게이션">
+        <a href="#about"      class="mobile-nav-link py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">About</a>
+        <a href="#skills"     class="mobile-nav-link py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Skills</a>
+        <a href="#experience" class="mobile-nav-link py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Experience</a>
+        <a href="#projects"   class="mobile-nav-link py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Projects</a>
+        <a href="#awards"     class="mobile-nav-link py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Awards</a>
+        <a href="#contact"    class="mobile-nav-link py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN
+  ============================================================ -->
+  <main>
+
+    <!-- ========================================================
+         HERO
+    ======================================================== -->
+    <section id="hero" class="pt-32 pb-20 px-6">
+      <div class="max-w-5xl mx-auto">
+
+        <!-- 인사말 -->
+        <div class="reveal">
+          <span class="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-3 py-1.5 rounded-full mb-6 border border-indigo-100 dark:border-indigo-900">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/>
+            </svg>
+            Senior BI Analyst @ Shopee Korea
+          </span>
+        </div>
+
+        <h1 class="reveal delay-100 text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight mb-4">
+          안녕하세요,<br/>이용호입니다.
+        </h1>
+
+        <p class="reveal delay-200 text-xl md:text-2xl text-slate-500 dark:text-slate-400 font-medium mb-10 max-w-2xl">
+          데이터로 매출과 전환율을 움직이는 BI 분석가
+        </p>
+
+        <!-- 메트릭 칩 -->
+        <div class="reveal delay-200 flex flex-wrap gap-3 mb-12">
+          <div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-2.5 shadow-sm">
+            <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">9년+</span>
+            <span class="text-sm text-slate-600 dark:text-slate-400 font-medium">데이터 분석</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-2.5 shadow-sm">
+            <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">60+</span>
+            <span class="text-sm text-slate-600 dark:text-slate-400 font-medium">대시보드 운영</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-2.5 shadow-sm">
+            <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">3년</span>
+            <span class="text-sm text-slate-600 dark:text-slate-400 font-medium">연속 어워드</span>
+          </div>
+        </div>
+
+        <!-- CTA 버튼 -->
+        <div class="reveal delay-300 flex flex-wrap gap-4">
+          <a href="mailto:yonghokvlee@gmail.com"
+            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-2xl transition-colors shadow-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            이메일 보내기
+          </a>
+          <a href="#projects"
+            class="inline-flex items-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 font-semibold px-6 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 transition-colors shadow-sm">
+            프로젝트 보기
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         ABOUT
+    ======================================================== -->
+    <section id="about" class="py-20 px-6 bg-white dark:bg-slate-800/30" aria-label="About">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="reveal text-3xl font-bold tracking-tight mb-10">About</h2>
+
+        <div class="grid md:grid-cols-2 gap-10 items-start">
+          <!-- 자기소개 -->
+          <div class="reveal delay-100">
+            <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6">
+              Shopee Korea에서 BI 시스템을 0에서 1로 구축하며 <span class="font-semibold text-indigo-600 dark:text-indigo-400">60+ 대시보드</span>를 설계·운영했습니다. SQL·Python을 기반으로 단순 리포트를 넘어 ML 모델링과 데이터 자동화까지 영역을 확장해 왔으며, <em>'신뢰할 수 있는 데이터'</em>와 <em>'실행 가능한 인사이트'</em>를 동시에 만들어내는 것을 목표로 합니다.
+            </p>
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+              데이터 기반의 의사결정 문화를 만드는 것이 BI 분석가의 진짜 역할이라고 믿습니다. 단순한 수치 제공을 넘어, 각 팀이 데이터를 스스로 해석하고 행동할 수 있는 환경을 구축하는 일을 즐깁니다.
+            </p>
+          </div>
+
+          <!-- 인포 카드 -->
+          <div class="reveal delay-200 space-y-4">
+            <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+              <div class="flex items-start gap-4">
+                <div class="p-2.5 bg-indigo-100 dark:bg-indigo-950/60 rounded-2xl mt-0.5">
+                  <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">학력</p>
+                  <p class="font-semibold text-slate-900 dark:text-slate-100">Boston University</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">수학 (통계) · 2011 – 2016</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+              <div class="flex items-start gap-4">
+                <div class="p-2.5 bg-indigo-100 dark:bg-indigo-950/60 rounded-2xl mt-0.5">
+                  <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">최근 직책</p>
+                  <p class="font-semibold text-slate-900 dark:text-slate-100">Senior BI Analyst</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">Shopee Korea · 2020.01 ~ 2026.04</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SKILLS
+    ======================================================== -->
+    <section id="skills" class="py-20 px-6" aria-label="Skills">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="reveal text-3xl font-bold tracking-tight mb-10">Skills</h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+          <!-- Languages -->
+          <div class="reveal delay-100 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-4">Languages</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-chip">Python</span>
+              <span class="skill-chip">SQL</span>
+            </div>
+          </div>
+
+          <!-- Data / ML -->
+          <div class="reveal delay-200 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-4">Data / ML</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-chip">Polars</span>
+              <span class="skill-chip">Pandas</span>
+              <span class="skill-chip">scikit-learn</span>
+              <span class="skill-chip">Gradient Boosting</span>
+              <span class="skill-chip">RandomOverSampler / SMOTE</span>
+              <span class="skill-chip">ML 모델 비교 실험 (42개 조합)</span>
+            </div>
+          </div>
+
+          <!-- BI Tools -->
+          <div class="reveal delay-300 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-4">BI Tools</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-chip">Looker</span>
+              <span class="skill-chip">Google Data Studio</span>
+              <span class="skill-chip">Data Studio Notebook2</span>
+              <span class="skill-chip">Google Apps Script</span>
+            </div>
+          </div>
+
+          <!-- Office / 기타 -->
+          <div class="reveal delay-400 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-4">Office / 기타</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-chip">Excel VBA</span>
+              <span class="skill-chip">MS Office</span>
+              <span class="skill-chip">Spark</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         EXPERIENCE
+    ======================================================== -->
+    <section id="experience" class="py-20 px-6 bg-white dark:bg-slate-800/30" aria-label="Experience">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="reveal text-3xl font-bold tracking-tight mb-12">Experience</h2>
+
+        <div class="relative pl-8 space-y-10">
+          <!-- 타임라인 세로선 -->
+          <div class="timeline-line" aria-hidden="true"></div>
+
+          <!-- Shopee Korea -->
+          <div class="reveal delay-100 relative">
+            <!-- 도트 -->
+            <div class="absolute -left-8 top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-2 border-white dark:border-slate-900 shadow" aria-hidden="true"></div>
+
+            <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-6">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                <div>
+                  <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Shopee Korea</h3>
+                  <p class="text-indigo-600 dark:text-indigo-400 font-semibold text-sm mt-0.5">Senior Business Intelligence Analyst</p>
+                </div>
+                <span class="inline-flex items-center text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-3 py-1.5 rounded-full whitespace-nowrap">
+                  2020.01 ~ 2026.04
+                </span>
+              </div>
+              <ul class="space-y-2 text-slate-700 dark:text-slate-300 text-sm">
+                <li class="flex items-start gap-2">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <span><strong class="text-indigo-600 dark:text-indigo-400">60+ 대시보드</strong> 설계·운영, 전사 BI 시스템 0→1 구축</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <span>신규 입사자 온보딩 지원 — BI Material 제작으로 빠른 적응 지원</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <span>SA팀 SQL 교육 진행으로 팀 데이터 독립성 향상</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 한솔섬유 -->
+          <div class="reveal delay-200 relative">
+            <div class="absolute -left-8 top-1.5 w-4 h-4 rounded-full bg-slate-400 border-2 border-white dark:border-slate-900 shadow" aria-hidden="true"></div>
+
+            <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-6">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                <div>
+                  <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">한솔섬유</h3>
+                  <p class="text-slate-500 dark:text-slate-400 font-semibold text-sm mt-0.5">해외영업팀 주임</p>
+                </div>
+                <span class="inline-flex items-center text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-3 py-1.5 rounded-full whitespace-nowrap">
+                  2016.11 ~ 2019.09
+                </span>
+              </div>
+              <ul class="space-y-2 text-slate-700 dark:text-slate-300 text-sm">
+                <li class="flex items-start gap-2">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <span>미국 월마트 <strong class="text-slate-900 dark:text-slate-100">4,000개 점포</strong> 세일즈 데이터 분석</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <span>Boys팀 매출 <span class="font-semibold text-indigo-600 dark:text-indigo-400">전년 대비 +80%</span> 달성에 기여</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         PROJECTS
+    ======================================================== -->
+    <section id="projects" class="py-20 px-6" aria-label="Projects">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="reveal text-3xl font-bold tracking-tight mb-3">Projects</h2>
+        <p class="reveal text-slate-500 dark:text-slate-400 mb-10">주요 프로젝트 9건 — 최신순</p>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <!-- 프로젝트 1 -->
+          <article class="reveal delay-100 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">셀러 입점 3개월<br/>주문 예측 모델</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">2024</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              7개 ML 모델 × 6개 오버샘플링(총 42개 조합) 비교 후 RandomOverSampler + Gradient Boosting 선택. Data Studio 파이프라인 구축.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">실무 적용 가능한 분류 성능 도달</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">Python</span>
+              <span class="tag-chip">scikit-learn</span>
+            </div>
+          </article>
+
+          <!-- 프로젝트 2 -->
+          <article class="reveal delay-200 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">단어 매칭<br/>Polars 가속화</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">2024</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              공정위 260만 통신판매업자 데이터에서 1,700개 잠재고객 추출. Pandas → Polars 전환으로 처리 속도 대폭 개선.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">처리 속도 5배 가속</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">Python</span>
+              <span class="tag-chip">Polars</span>
+            </div>
+          </article>
+
+          <!-- 프로젝트 3 -->
+          <article class="reveal delay-300 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">SO팀<br/>업무 자동화</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">2024</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              JP Shop Adoption / GP Live 아카이빙 등 5건 이상 자동화 구현으로 운영 효율 극대화.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">일일 업무 1시간+ 단축 · 오류 90% 감소</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">SQL</span>
+            </div>
+          </article>
+
+          <!-- 프로젝트 4 -->
+          <article class="reveal delay-100 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">PR/Marketing<br/>이메일 캠페인 분석</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">2024.10</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              Stibee 데이터 분석으로 오픈율·클릭율 도출. 콘텐츠·UI 개선안을 마케팅팀에 제안.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Open rate 39% / Click rate 18%</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">SQL</span>
+              <span class="tag-chip">Python</span>
+            </div>
+          </article>
+
+          <!-- 프로젝트 5 -->
+          <article class="reveal delay-200 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">KR vs Local<br/>아이템 매칭 로직</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">2023</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              언어별 최적화된 단어 매칭 알고리즘 개발. 여러 비즈니스 케이스에 재사용 가능한 범용 모듈로 설계.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">상품명 매칭 분석으로 매출 +20%</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">SQL</span>
+              <span class="tag-chip">Python</span>
+            </div>
+          </article>
+
+          <!-- 프로젝트 6 -->
+          <article class="reveal delay-300 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">JP TW Non-SLS<br/>Leadtime Dashboard</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">2023</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              사용자 경험 분석으로 Non-SLS 도입 의사결정 지원. 셀러 확장 분석을 통해 대만 진출을 지원.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">대만 진출 셀러 매출 +30%</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">SQL</span>
+            </div>
+          </article>
+
+          <!-- 프로젝트 7 -->
+          <article class="reveal delay-100 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">셀러 분석 —<br/>주문 전환율 개선</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">Shopee Korea</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              셀러 행동 데이터 분석으로 전환율 병목 구간 파악. 신규 브랜드 5개 입점 추진.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">주문 전환율 +12% · 매출 5% 기여</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">SQL</span>
+              <span class="tag-chip">Python</span>
+            </div>
+          </article>
+
+          <!-- 프로젝트 8 -->
+          <article class="reveal delay-200 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">Intermediate 테이블 /<br/>Mart 마이그레이션</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">2022</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              KRCB 셀러 지표를 통합하는 중간 테이블 설계. KR 리포트 전반에서 활용되는 핵심 데이터 레이어.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">KR report 90%+ 활용 · 워크플로 +30%↑</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">SQL</span>
+            </div>
+          </article>
+
+          <!-- 프로젝트 9 -->
+          <article class="reveal delay-300 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors p-5 flex flex-col">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base leading-snug">BI 시스템<br/>0→1 구축</h3>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap mt-0.5">2020 – 2021</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
+              600건 ad-hoc 데이터 요청 처리(일평균 3.4건). 30개 Lumos Download Board 구축. Shop Live Date Tracking 자동화.
+            </p>
+            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">임팩트</p>
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">요청 처리 3–4일 → 일일 자동화</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-chip">SQL</span>
+              <span class="tag-chip">Python</span>
+              <span class="tag-chip">Spark</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         AWARDS & EDUCATION
+    ======================================================== -->
+    <section id="awards" class="py-20 px-6 bg-white dark:bg-slate-800/30" aria-label="Awards and Education">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="reveal text-3xl font-bold tracking-tight mb-12">Awards &amp; Education</h2>
+
+        <div class="grid md:grid-cols-2 gap-10">
+
+          <!-- 왼쪽: Awards -->
+          <div class="space-y-8">
+
+            <!-- 어워드 -->
+            <div class="reveal delay-100">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">Shopee Korea Awards</h3>
+              <div class="space-y-3">
+
+                <div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3">
+                  <span class="text-xl" aria-hidden="true">🏆</span>
+                  <div>
+                    <p class="font-semibold text-slate-900 dark:text-slate-100 text-sm">Unsung Hero</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">2023 Shopee Korea Award</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3">
+                  <span class="text-xl" aria-hidden="true">💎</span>
+                  <div>
+                    <p class="font-semibold text-slate-900 dark:text-slate-100 text-sm">숨은 보석상</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">2022 Shopee Korea Award</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3">
+                  <span class="text-xl" aria-hidden="true">⭐</span>
+                  <div>
+                    <p class="font-semibold text-slate-900 dark:text-slate-100 text-sm">Value Award</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">2021 Shopee Korea Award</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 오른쪽: 학력 + 자격/교육 -->
+          <div class="space-y-8">
+
+            <!-- 학력 -->
+            <div class="reveal delay-100">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">학력</h3>
+              <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+                <div class="flex items-start gap-4">
+                  <div class="p-2.5 bg-indigo-100 dark:bg-indigo-950/60 rounded-2xl mt-0.5 flex-shrink-0">
+                    <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-900 dark:text-slate-100">Boston University</p>
+                    <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">수학 (통계)</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">2011 – 2016 · Boston, MA, USA</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 자격 / 교육 -->
+            <div class="reveal delay-200">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">자격 &amp; 교육</h3>
+              <div class="space-y-2.5">
+
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">IBM Data Analyst</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Coursera · 2021</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">SQL 데이터분석</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">인프런 · 2023</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Python 이커머스 분석</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">패스트캠퍼스 · 2022</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3">
+                  <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">그로스해킹</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">인프런 · 2021</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER / CONTACT
+  ============================================================ -->
+  <footer id="contact" class="py-20 px-6 bg-slate-900 dark:bg-slate-950 text-white" aria-label="Contact">
+    <div class="max-w-5xl mx-auto text-center">
+
+      <div class="reveal">
+        <h2 class="text-3xl font-bold tracking-tight mb-3">Contact</h2>
+        <p class="text-slate-400 mb-10">협업·채용 문의는 언제든지 환영합니다.</p>
+      </div>
+
+      <!-- 이메일 -->
+      <div class="reveal delay-100 mb-12">
+        <button
+          id="copyEmail"
+          aria-label="이메일 주소 복사 — yonghokvlee@gmail.com"
+          class="group inline-flex items-center gap-3 bg-slate-800 hover:bg-indigo-600 border border-slate-700 hover:border-indigo-500 text-slate-100 font-semibold px-6 py-4 rounded-2xl transition-colors duration-200 cursor-pointer"
+        >
+          <svg class="w-5 h-5 text-indigo-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <a href="mailto:yonghokvlee@gmail.com" class="hover:text-white transition-colors" onclick="event.stopPropagation()">
+            yonghokvlee@gmail.com
+          </a>
+          <svg class="w-4 h-4 text-slate-500 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+        </button>
+        <p class="text-xs text-slate-500 mt-3">클릭하면 주소가 클립보드에 복사됩니다</p>
+      </div>
+
+      <!-- 구분선 -->
+      <div class="reveal border-t border-slate-800 pt-8">
+        <p class="text-sm text-slate-500">© 2026 Yongho Lee · All rights reserved</p>
+        <p class="text-xs text-slate-600 mt-1">Senior Business Intelligence Analyst @ Shopee Korea</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       INLINE STYLES: 스킬 칩 / 태그 칩 공통 (Tailwind @apply 대신 직접)
+  ============================================================ -->
+  <style>
+    .skill-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+    }
+    .dark .skill-chip {
+      background: #1e293b;
+      color: #94a3b8;
+      border-color: #334155;
+    }
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      border: 1px solid #c7d2fe;
+    }
+    .dark .tag-chip {
+      background: rgba(79, 70, 229, 0.15);
+      color: #818cf8;
+      border-color: rgba(79, 70, 229, 0.3);
+    }
+  </style>
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <script>
+    // ─── 다크모드 초기화 ───────────────────────────────────────
+    (function () {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+
+    // ─── 다크모드 아이콘 동기화 ───────────────────────────────
+    function syncDarkIcons() {
+      const isDark = document.documentElement.classList.contains('dark');
+      // 데스크톱
+      document.getElementById('iconMoon').classList.toggle('hidden', isDark);
+      document.getElementById('iconSun').classList.toggle('hidden', !isDark);
+      // 모바일
+      document.getElementById('iconMoonMobile').classList.toggle('hidden', isDark);
+      document.getElementById('iconSunMobile').classList.toggle('hidden', !isDark);
+    }
+
+    function toggleDark() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      syncDarkIcons();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      syncDarkIcons();
+
+      document.getElementById('darkToggle').addEventListener('click', toggleDark);
+      document.getElementById('darkToggleMobile').addEventListener('click', toggleDark);
+
+      // ─── 햄버거 메뉴 ────────────────────────────────────────
+      const hamburger   = document.getElementById('hamburger');
+      const mobileMenu  = document.getElementById('mobileMenu');
+      const iconHam     = document.getElementById('iconHam');
+      const iconClose   = document.getElementById('iconClose');
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+      function closeMobileMenu() {
+        mobileMenu.classList.add('hidden');
+        iconHam.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+
+      hamburger.addEventListener('click', function () {
+        const isOpen = !mobileMenu.classList.contains('hidden');
+        if (isOpen) {
+          closeMobileMenu();
+        } else {
+          mobileMenu.classList.remove('hidden');
+          iconHam.classList.add('hidden');
+          iconClose.classList.remove('hidden');
+          hamburger.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      mobileLinks.forEach(function (link) {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // ─── 네비 스크롤 효과 ──────────────────────────────────
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function () {
+        if (window.scrollY > 10) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      // ─── IntersectionObserver 등장 애니메이션 ───────────────
+      const revealEls = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      revealEls.forEach(function (el) {
+        observer.observe(el);
+      });
+
+      // ─── 클립보드 복사 + 토스트 ─────────────────────────────
+      const toast     = document.getElementById('toast');
+      const copyBtn   = document.getElementById('copyEmail');
+      let toastTimer  = null;
+
+      function showToast() {
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toast.classList.remove('show');
+        }, 2500);
+      }
+
+      copyBtn.addEventListener('click', function () {
+        const email = 'yonghokvlee@gmail.com';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(showToast).catch(function () {
+            fallbackCopy(email);
+          });
+        } else {
+          fallbackCopy(email);
+        }
+      });
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity  = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showToast(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+  </script>
+
+</body>
+</html>
